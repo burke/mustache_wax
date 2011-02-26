@@ -1,4 +1,5 @@
 require 'active_support/all' # Hash#to_json is unfortunately tightly coupled to a lot of other AS code.
+require 'mustache_wax/mustache_rails'
 
 class MustacheWax
   
@@ -6,6 +7,10 @@ class MustacheWax
     class Railtie < Rails::Railtie
       initializer 'mustache_wax.initialize' do |app|
         MustacheWax.generate_templates
+
+        require 'mustache_rails'
+        # Generator
+        Rails.application.config.generators.template_engine :mustache
         
         if Rails.env.development?
           class MustacheWax::Middleware
